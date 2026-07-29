@@ -1,0 +1,11 @@
+# the compiled program
+pyramid
+
+.DS_Store
+
+# Visual Studio
+.vs/
+Debug/
+Release/
+x64/
+*.user
