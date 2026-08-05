@@ -28,7 +28,7 @@ float rotationZ = 0.0f;
 float scaleZ = 1.0f;
 
 
-// Vertex shader
+//vertex shader
 const char* vertexShaderSource = R"glsl(
     #version 330 core
 
@@ -46,7 +46,7 @@ const char* vertexShaderSource = R"glsl(
 )glsl";
 
 
-// Fragment shader
+//fragment shader
 const char* fragmentShaderSource = R"glsl(
     #version 330 core
 
@@ -59,7 +59,7 @@ const char* fragmentShaderSource = R"glsl(
 )glsl";
 
 
-// Compile a shader
+//compile a shader
 unsigned int compileShader(GLenum type, const char* source) {
     unsigned int shader = glCreateShader(type);
 
@@ -81,7 +81,7 @@ unsigned int compileShader(GLenum type, const char* source) {
 }
 
 
-// Keyboard input
+//keyboard input
 void processInput(
     GLFWwindow* window,
     int key,
@@ -132,7 +132,7 @@ void processInput(
 
 
 int main() {
-    // Initialize GLFW
+    //initialize GLFW
     if (!glfwInit()) {
         std::cout << "Failed to initialize GLFW." << std::endl;
         return -1;
@@ -145,6 +145,8 @@ int main() {
         GLFW_OPENGL_CORE_PROFILE
     );
 
+
+// for my mac (wis)
 #ifdef __APPLE__
     glfwWindowHint(
         GLFW_OPENGL_FORWARD_COMPAT,
@@ -152,7 +154,7 @@ int main() {
     );
 #endif
 
-    // Create the window
+    //create window
     GLFWwindow* window = glfwCreateWindow(
         WIDTH,
         HEIGHT,
@@ -170,7 +172,7 @@ int main() {
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, processInput);
 
-    // Initialize GLEW
+    //initialize GLEW
     glewExperimental = GL_TRUE;
 
     if (glewInit() != GLEW_OK) {
@@ -183,7 +185,7 @@ int main() {
     glEnable(GL_DEPTH_TEST);
 
 
-    // Compile and link the shaders
+    //compile + link the shaders
     unsigned int vertexShader = compileShader(
         GL_VERTEX_SHADER,
         vertexShaderSource
@@ -204,9 +206,9 @@ int main() {
     glDeleteShader(fragmentShader);
 
 
-    // Pyramid vertices: position and colour
+    // pyramid vertices
     float vertices[] = {
-        // Position              // Colour
+        //position and colors
         -0.5f, -0.5f,  0.5f,    1.00f, 0.25f, 0.55f,
          0.5f, -0.5f,  0.5f,    0.85f, 0.10f, 0.45f,
          0.5f, -0.5f, -0.5f,    0.95f, 0.45f, 0.70f,
@@ -215,7 +217,7 @@ int main() {
     };
 
 
-    // Pyramid triangles
+    //pyramid triangles
     unsigned int indices[] = {
         0, 1, 4,
         1, 2, 4,
@@ -226,7 +228,7 @@ int main() {
     };
 
 
-    // Create the VAO, VBO and EBO
+    //create the VAO, VBO and EBO
     unsigned int VAO;
     unsigned int VBO;
     unsigned int EBO;
@@ -254,7 +256,7 @@ int main() {
     );
 
 
-    // Vertex positions
+    //vertex positions
     glVertexAttribPointer(
         0,
         3,
@@ -267,7 +269,7 @@ int main() {
     glEnableVertexAttribArray(0);
 
 
-    // Vertex colours
+    //vertex colours
     glVertexAttribPointer(
         1,
         3,
@@ -288,7 +290,7 @@ int main() {
     );
 
 
-    // Render loop
+    //render loop
     while (!glfwWindowShouldClose(window)) {
         glClearColor(
             0.12f,
@@ -303,7 +305,7 @@ int main() {
         );
 
 
-        // Model transformations
+        //model transformations
         glm::mat4 model = glm::mat4(1.0f);
 
         model = glm::translate(
@@ -323,7 +325,7 @@ int main() {
         );
 
 
-        // Camera
+        //camera
         glm::mat4 view = glm::lookAt(
             glm::vec3(0.0f, 1.0f, 3.0f),
             glm::vec3(0.0f, 0.0f, 0.0f),
@@ -331,7 +333,7 @@ int main() {
         );
 
 
-        // Perspective projection
+        //perspective projection
         glm::mat4 projection = glm::perspective(
             glm::radians(45.0f),
             static_cast<float>(WIDTH) /
@@ -345,7 +347,7 @@ int main() {
             projection * view * model;
 
 
-        // Draw the pyramid
+        //draw pyramid
         glUseProgram(shaderProgram);
 
         glUniformMatrix4fv(
@@ -370,7 +372,7 @@ int main() {
     }
 
 
-    // Cleanup
+    // cleanup
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
